@@ -17,6 +17,9 @@ class NumberBaseballGameActivity : BaseActivity() {
 
     lateinit var mAdapter: ChatAdapter
 
+//    컴퓨터가 낸 3자리 문제를 담아둘 ArrayList
+    val cpuNumbers = ArrayList<Int>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_number_baseball_game)
@@ -55,6 +58,35 @@ class NumberBaseballGameActivity : BaseActivity() {
         mAdapter = ChatAdapter(mContext, mChatList)
         binding.chattingRecyclerView.adapter = mAdapter
         binding.chattingRecyclerView.layoutManager = LinearLayoutManager(mContext)
+
+    }
+
+//    컴퓨터가 3자리 문제 출제 함수.
+
+    fun makeCpuNumbers() {
+
+//        3개의 숫자를 문제로.
+
+        for (i in 0 until 3) {
+
+//            써도 되는 숫자가 나올때까지 무한반복 => 랜덤숫자 추출
+            while (true) {
+
+//                1~9의 랜덤값 추출.
+                val randomNum = (Math.random() * 9 + 1).toInt()
+
+//                cpuNumbers에 이미 나와있나?
+                val isDupleOk = !cpuNumbers.contains(randomNum)
+
+                if (isDupleOk) {
+                    cpuNumbers.add(randomNum)
+//                    무한반복 종료 => 다음 숫자 뽑으러
+                    break
+                }
+
+            }
+
+        }
 
     }
 }
