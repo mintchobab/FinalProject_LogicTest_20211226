@@ -40,9 +40,12 @@ class LottoSimulatorActivity : BaseActivity() {
     var myMoney = 10000000  // 1천만원 ~ 0원까지
     var earnMoney = 0L  // 0을 대입 : Int다.  10억단위 숫자도 표현하려고 Long으로 대입.
 
+    //    지금 자동구매가 진행중인지 기록해둘 변수
+    var isAutoNow = false
+
 //    Handler를 이용해서 한번구매 후의 다음 할일로 다시 구매를 등록하는 방식
 
-    lateinit var myHandler : Handler
+    lateinit var myHandler: Handler
 
 //    로또 한장을 구매하는 프로세스를 => 핸들러가 처리할 수 있는 일로써 보관. (할일이 뭔지 보관) : Runnable
 
@@ -62,7 +65,8 @@ class LottoSimulatorActivity : BaseActivity() {
             }
 //            돈이 없다면 반복 종료.
             else {
-                Toast.makeText(this@LottoSimulatorActivity, "자동 구매를 중단합니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LottoSimulatorActivity, "자동 구매를 중단합니다.", Toast.LENGTH_SHORT)
+                    .show()
 //                추가 코드 작성 X => 이 코드가 끝나고 할일을 다시 등록하지 않는다. => 반복 종료
             }
 
@@ -80,10 +84,26 @@ class LottoSimulatorActivity : BaseActivity() {
 
         binding.btnAutoMode.setOnClickListener {
 
+//            자동구매가 돌고있지 않을 때 -> 시작
+
+            if (!isAutoNow) {
+
 //            반복 구매 프로세스를 변수에 저장해둠. (buyLottoRunnable)
 //            myHandler가 해당 프로세스를 시작하도록.
 
-            myHandler.post(buyLottoRunnable)
+                myHandler.post(buyLottoRunnable)
+
+                isAutoNow = true
+
+            }
+            else {
+//                이미 자동 구매 진행중. => 반복 중단.
+//                다음 할 일 (구매 프로세스)로 등록된 Runnable을 제거
+
+                myHandler.removeCallbacks(buyLottoRunnable)
+
+                isAutoNow = false
+            }
 
         }
 
@@ -138,8 +158,7 @@ class LottoSimulatorActivity : BaseActivity() {
 //                2등!
                 rankCount2++
                 earnMoney += 50000000  // 번 돈을 50만원 증가
-            }
-            else {
+            } else {
 //                3등!
                 rankCount3++
                 earnMoney += 1500000  // 번 돈을 50만원 증가
@@ -147,7 +166,7 @@ class LottoSimulatorActivity : BaseActivity() {
 
 
         } else if (correctCount == 4) {
-            rankCount3++
+            rankCount4++
             earnMoney += 50000  // 번 돈을 5만원 증가
         } else if (correctCount == 3) {
             rankCount5++
