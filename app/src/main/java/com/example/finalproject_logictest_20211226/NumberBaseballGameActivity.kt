@@ -2,6 +2,7 @@ package com.example.finalproject_logictest_20211226
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,8 @@ class NumberBaseballGameActivity : BaseActivity() {
 
     override fun setValues() {
 
+        makeCpuNumbers()
+
         mChatList.add(ChatData("CPU", "숫자 야구게임에 오신것을 환영합니다."))
         mChatList.add(ChatData("CPU", "3자리 숫자로 문제가 생성되었습니다."))
         mChatList.add(ChatData("CPU", "밑의 입력칸을 이용해 3자리 숫자를 맞춰주세요."))
@@ -88,7 +91,12 @@ class NumberBaseballGameActivity : BaseActivity() {
 
         }
 
-    }
+//        문제 확인용 로그
+        for (num in cpuNumbers) {
+            Log.d("문제숫자", num.toString())
+        }
+
+   }
 }
 
 
