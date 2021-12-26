@@ -21,6 +21,9 @@ class NumberBaseballGameActivity : BaseActivity() {
     //    컴퓨터가 낸 3자리 문제를 담아둘 ArrayList
     val cpuNumbers = ArrayList<Int>()
 
+//    입력횟수를 기록해둘 변수
+    var tryCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_number_baseball_game)
@@ -31,6 +34,9 @@ class NumberBaseballGameActivity : BaseActivity() {
     override fun setupEvents() {
 
         binding.btnSend.setOnClickListener {
+
+//            한번 추가 시도했다고 기록.
+            tryCount++
 
             val inputMessage = binding.edtNumber.text.toString()
 
@@ -120,12 +126,13 @@ class NumberBaseballGameActivity : BaseActivity() {
 //            CPU가 정답 축하 메세지.
             val cpuChat2 = ChatData("CPU", "축하합니다! 정답을 맞췄습니다.")
             mChatList.add(cpuChat2)
+            mChatList.add(ChatData("CPU", "${tryCount}회 만에 정답을 맞췄습니다."))
             mAdapter.notifyDataSetChanged()
 
 //            입력칸 막아주기.
             binding.edtNumber.isEnabled = false
-            binding.btnSend.isEnabled = false
-
+            binding.btnSend.isEnabled = false            
+            
         }
 
     }
