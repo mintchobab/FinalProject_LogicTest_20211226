@@ -1,7 +1,6 @@
 package com.example.finalproject_logictest_20211226
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.finalproject_logictest_20211226.databinding.ActivityMainBinding
@@ -14,7 +13,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setupEvents()
-        setupValues()
+        setValues()
     }
 
     override fun setupEvents() {
@@ -35,7 +34,7 @@ class MainActivity : BaseActivity() {
 
     }
 
-    override fun setupValues() {
+    override fun setValues() {
 
     }
 }
