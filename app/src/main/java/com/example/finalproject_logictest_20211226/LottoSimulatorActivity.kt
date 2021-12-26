@@ -23,6 +23,9 @@ class LottoSimulatorActivity : BaseActivity() {
     //    당첨번호를 표시할 텍스트뷰 목록 => xml의 텍스트뷰 목록.
     val winNumberTxtList = ArrayList<TextView>()
 
+    //    보너스 번호도 뽑아야함
+    var bonusNum = 0
+
     //    각 등수별 당첨횟수를 기록
     var rankCount1 = 0
     var rankCount2 = 0
@@ -107,8 +110,10 @@ class LottoSimulatorActivity : BaseActivity() {
         }
 
 //        자금 변동사항도 텍스트뷰에 반영
-        binding.txtMyMoney.text = "소지금액 : ${NumberFormat.getInstance(Locale.KOREA).format(myMoney)} 원"
-        binding.txtEarnMoney.text = "당첨금액 : ${NumberFormat.getInstance(Locale.KOREA).format(earnMoney)} 원"
+        binding.txtMyMoney.text =
+            "소지금액 : ${NumberFormat.getInstance(Locale.KOREA).format(myMoney)} 원"
+        binding.txtEarnMoney.text =
+            "당첨금액 : ${NumberFormat.getInstance(Locale.KOREA).format(earnMoney)} 원"
 
 
 //        새로 변경된 당첨횟수들을 텍스트뷰에 반영
@@ -159,6 +164,24 @@ class LottoSimulatorActivity : BaseActivity() {
 
         }
 
+//        보너스 번호도 추첨해야함.
+//        1~45 랜덤, 하나만 추첨.
+//        제약 : 기존에 뽑아둔 당첨번호와 중복되면 안됨.
+
+//        무한반복 => 괜찮은 보너스번호가 나오면 추첨 종료.
+
+        while (true) {
+
+            val randomNum = (Math.random() * 45 + 1).toInt()
+            val isDupleOk = !winNumberList.contains(randomNum)
+            if (isDupleOk) {
+                bonusNum = randomNum
+                break
+            }
+
+        }
+
+
 //        당첨번호 6개를 => 작은 수 ~ 큰 수 (오름차순) 정렬
 
         winNumberList.sort()
@@ -170,6 +193,9 @@ class LottoSimulatorActivity : BaseActivity() {
             winNumberTxtList[index].text = winNum.toString()
 
         }
+
+//        보너스 번호도 텍스트뷰에 반영
+        binding.txtBonusNum.text = bonusNum.toString()
 
     }
 
