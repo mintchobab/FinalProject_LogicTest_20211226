@@ -18,8 +18,8 @@ class NumberBaseballGameActivity : BaseActivity() {
 
     lateinit var mAdapter: ChatAdapter
 
-//    컴퓨터가 낸 3자리 문제를 담아둘 ArrayList
-    val cpuNumbers = ArrayList<Int>
+    //    컴퓨터가 낸 3자리 문제를 담아둘 ArrayList
+    val cpuNumbers = ArrayList<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class NumberBaseballGameActivity : BaseActivity() {
             binding.edtNumber.setText("")
 
 //            ?S ?B 계산해서 알려주기
-            checkStrikeAndBall()
+            checkStrikeAndBall(inputMessage)
 
         }
 
@@ -66,7 +66,7 @@ class NumberBaseballGameActivity : BaseActivity() {
 
         val myNumbers = ArrayList<Int>()
 
-        myNumbers.add(inputNumber / 100 )  // 123 => 1 추출? 정수 / 정수 : 결과도 정수 (소수점 버림) => 123 / 100 = 1
+        myNumbers.add(inputNumber / 100)  // 123 => 1 추출? 정수 / 정수 : 결과도 정수 (소수점 버림) => 123 / 100 = 1
         myNumbers.add(inputNumber / 10 % 10)  // 123 => 2 추출? 123 -> 12로 변환 (10으로 나눈 몫) -> 1의 자리?
         myNumbers.add(inputNumber % 10)  // 123 => 3 추출? 10으로 나눈 나머지? 1의 자리
 
@@ -74,6 +74,45 @@ class NumberBaseballGameActivity : BaseActivity() {
         for (num in myNumbers) {
             Log.d("내 숫자", num.toString())
         }
+
+//        내 숫자 3개 / CPU 숫자 3개 => s / b 개수 판별
+        var strikeCount = 0
+        var ballCount = 0
+
+//        반복 검사 => 실제 데이터 + 위치값
+
+        myNumbers.forEachIndexed { myIndex, myNum ->
+
+//            내 숫자 하나당 => CPU 숫자 세개 검사.
+
+            cpuNumbers.forEachIndexed { cpuIndex, cpuNum ->
+
+//                S/B => 숫자는 같아야 판단.
+                if (myNum == cpuNum) {
+//                    같은 숫자 발견!
+//                    추가 질문 => 위치도 같은가? 같으면 S / 다르면 B
+                    if (myIndex == cpuIndex) {
+                        strikeCount++
+                    }
+                    else {
+//                        위치는 다르지만, 숫자는 같다. B
+                        ballCount++
+                    }
+
+                }
+
+            }
+
+        }
+
+//        ?S ?B 모두 구해냄
+        Log.d("스트라이크", strikeCount.toString())
+        Log.d("볼", ballCount.toString())
+
+//        CPU가 말해주는 양식으로 리싸이클러뷰에 추가.
+        val cpuChat = ChatData("CPU", "${strikeCount}S ${ballCount}B 입니다.")
+        mChatList.add(cpuChat)
+        mAdapter.notifyDataSetChanged()
 
     }
 
@@ -123,7 +162,7 @@ class NumberBaseballGameActivity : BaseActivity() {
             Log.d("문제숫자", num.toString())
         }
 
-   }
+    }
 }
 
 
