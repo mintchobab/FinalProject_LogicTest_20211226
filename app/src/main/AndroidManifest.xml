@@ -10,6 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject_LogicTest_20211226">
         <activity
+            android:name=".LottoSimulatorActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NumberBaseballGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/Theme.FinalProject_LogicTest_20211226.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
